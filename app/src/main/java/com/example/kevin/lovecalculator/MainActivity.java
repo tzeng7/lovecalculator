@@ -56,38 +56,41 @@ public class MainActivity extends AppCompatActivity {
 
         if (firstName.toLowerCase().equals("geoff") || secondName.toLowerCase().equals("geoff")) {
             String output = "You are: 100000% compatible";
-        }
-        System.out.println("api call");
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
-                "https://love-calculator.p.mashape.com/getPercentage?fname=" + firstName + "&sname=" + secondName,
-                null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            String result = response.getString("percentage");
-                            String output = result + "% compatible";
-                            resultView.setText(output);
-                        } catch (Exception e) {
-                            System.out.println(e.toString());
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println(error.toString());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("X-Mashape-Key", "rgSuty2yxFmsh0VQoPdmnn71aPl6p1RehrkjsnKvDTaGjziv40");
-                params.put("Accept", "application/json");
-                return params;
-            }
-        };
+            resultView.setText(output);
 
-        requestQueue.add(jsonObjectRequest);
+        } else {
+            System.out.println("api call");
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                    "https://love-calculator.p.mashape.com/getPercentage?fname=" + firstName + "&sname=" + secondName,
+                    null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            try {
+                                String result = response.getString("percentage");
+                                String output = result + "% compatible";
+                                resultView.setText(output);
+                            } catch (Exception e) {
+                                System.out.println(e.toString());
+                            }
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println(error.toString());
+                        }
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("X-Mashape-Key", "rgSuty2yxFmsh0VQoPdmnn71aPl6p1RehrkjsnKvDTaGjziv40");
+                    params.put("Accept", "application/json");
+                    return params;
+                }
+            };
+
+            requestQueue.add(jsonObjectRequest);
+        }
     }
 }
